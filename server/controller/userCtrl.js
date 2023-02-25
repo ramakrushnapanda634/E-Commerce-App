@@ -31,4 +31,51 @@ token:generateToken(findUser?._id)
   throw new Error("Invalid Credentials");
 }
 })
-module.exports = { createUser, loginUserCtrl };
+//update a user
+const updatedUser=asyncHandler(async(req,res)=>{
+  console.log(req.user)
+const {_id}=req.user;
+try{
+  const updateUser=await User.findByIdAndUpdate(_id,{
+firstname:req?.body?.firstname,
+lastname:req?.body?.lastname,
+email:req?.body?.email,
+mobile:req?.body?.mobile,
+// password:req?.body?.password
+  },{
+    
+    new:true
+  }
+  );
+  res.json(updateUser)
+}catch(err){
+  throw new Error(err)
+}
+})
+//get all users
+const getallUser=asyncHandler(async (req,res)=>{
+try{
+  const getUsers=await User.find()
+  res.json(getUsers);
+}catch(err){
+  throw new Error(err)
+}
+})
+const getaUser=asyncHandler(async(req,res)=>{
+  try{
+    const getUser=await User.findById(req.params.id)
+    res.json(getUser)
+  }catch(err){
+    throw new Error(err)
+  }
+})
+const deleteaUser = asyncHandler(async (req, res) => {
+  try {
+    const deleteUser = await User.findById(req.params.id);
+   deleteUser.remove()
+   res.json("user deleted")
+  } catch (err) {
+    throw new Error(err);
+  }
+});
+module.exports = { createUser, loginUserCtrl,updatedUser,getallUser,getaUser,deleteaUser  };
