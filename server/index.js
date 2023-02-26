@@ -4,11 +4,12 @@ const connection = require("./config/db");
 const cors = require("cors");
 const app = express();
 const authRouter=require("./routers/authRoute");
+const cookieParser=require("cookie-parser");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-
+app.use(cookieParser())
 const PORT = process.env.PORT || 8080;
 // app.use("/", (req, res) => {
 //   res.send("hello world");
